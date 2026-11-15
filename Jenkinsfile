@@ -38,7 +38,7 @@ pipeline {
               --dry-run=client -o yaml | kubectl apply -f - > /dev/null
             rm -rf rendered && mkdir rendered
             for f in k8s/*.yaml; do
-              sed "s#__REGISTRY__#$REGISTRY#g; s#__TAG__#${IMAGE_TAG}#g" $f > rendered/$(basename $f)
+              sed "s#__REGISTRY__#$REGISTRY#g; s#__TAG__#${IMAGE_TAG:-latest}#g" $f > rendered/$(basename $f)
             done
             set -x
             kubectl -n shopstream apply -f rendered/
